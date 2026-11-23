@@ -24,3 +24,21 @@ Plain HTML/CSS/JS — no build step. Open `index.html` in a browser.
 
 GitHub Pages: Settings → Pages → Deploy from branch → вибрати гілку і `/ (root)`.
 Або перетягнути папку на netlify.com/drop.
+
+## Плеєр BeatStars
+
+`script.js` → `CONFIG.beatstarsPlayer`. Встав туди код вбудованого плеєра з BeatStars
+(увесь `<iframe ...>`, лише посилання з нього або лише число storeId).
+Поки поле порожнє, сайт показує ручний список `beats`.
+
+## Хромові заголовки
+
+Заголовки секцій — картинки `assets/headings/*.webp`, згенеровані скриптом:
+
+```
+pip install pillow numpy scipy
+python3 tools/make_headings.py
+```
+
+Текст заголовків — у `HEADINGS` у скрипті. Шрифт — UnifrakturMaguntia (безкоштовний аналог Old English, ліцензія OFL, `tools/fonts/`).
+Щоб змінити «рідкий» візерунок, зміни `seed` або `RAMP` у скрипті.

@@ -13,6 +13,16 @@ const CONFIG = {
   },
 
   /*
+    Official BeatStars player (shows all your beats + checkout).
+    Paste ANY of these from BeatStars Studio's embed/widget code:
+      - the whole <iframe ...> code
+      - just its src link, e.g. "https://player.beatstars.com/?storeId=123456"
+      - or just the store ID number, e.g. "123456"
+    While it's empty, the site shows the manual `beats` list below instead.
+  */
+  beatstarsPlayer: "",
+
+  /*
     Each beat:
       title  — beat name
       genre  — used for the filter chips
@@ -90,6 +100,29 @@ function toast(msg) {
   t.classList.add("show");
   clearTimeout(toastT);
   toastT = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* ---------- BeatStars embed ---------- */
+function beatstarsSrc(v) {
+  v = String(v || "").trim();
+  if (!v) return "";
+  if (/^\d+$/.test(v)) return `https://player.beatstars.com/?storeId=${v}`;
+  const m = v.match(/src\s*=\s*["']([^"']+)["']/i);
+  const src = (m ? m[1] : v).replace(/&amp;/g, "&");
+  return /^https:\/\/([a-z0-9-]+\.)*beatstars\.com\//i.test(src) ? src : "";
+}
+const bsSrc = beatstarsSrc(CONFIG.beatstarsPlayer);
+if (bsSrc) {
+  const box = $("#bsPlayer");
+  const frame = document.createElement("iframe");
+  frame.src = bsSrc;
+  frame.title = "Kiyara Sunshine beats on BeatStars";
+  frame.loading = "lazy";
+  frame.allow = "autoplay; encrypted-media";
+  box.append(frame);
+  box.hidden = false;
+  $$("#beats .toolbar, #beatList, #emptyState").forEach((el) => { el.hidden = true; el.style.display = "none"; });
+  $("#beats .section-sub").textContent = "Press play, pick a license and check out right here — powered by BeatStars.";
 }
 
 /* ---------- beats ---------- */
